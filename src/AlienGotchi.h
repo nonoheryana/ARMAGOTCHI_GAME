@@ -1,10 +1,33 @@
 #ifndef ALIENGOTCHI_H
 #define ALIENGOTCHI_H
 
-#define Healthy_MAX 100
-#define Happy_MAX 150
-#define Hungry_MAX 200
+#define Healthy_MAX 50
+#define Happy_MAX 50
+#define Hungry_MAX 50
 
+//the higher the value the more hungry the pet is
+#define Hungry_Thres_Up        35
+
+//the lower the value the less hungry the pet is
+#define Hungry_Thres_Down      15
+
+//the higher the value the more happy the pet is
+#define Happy_Thres_Up	       40
+
+//the lower the value the less happy the pet is
+#define Happy_Thres_Down	   20
+
+//the higher the value the more healthy the pet is
+#define Health_Thres_Up		   45
+
+//the lower the value the less healthy the pet is (== Sick_Thres)
+#define Health_Thres_Down	   15
+
+//above that threshold the pet is sick
+#define Sick_Thres			   45
+
+//below that threshold the pet is dead
+#define Death_Thres			   0
 //------------------------------------------------------------------------
 //
 //  Name:   AlienGotchi.h
@@ -23,32 +46,6 @@ using std::string;
 
 
 class State;
-
-//the higher the value the more hungry the pet is
-const int Hungry_Thres_Up       = 15;
-
-//the lower the value the less hungry the pet is
-const int Hungry_Thres_Down     = 5;
-
-//the higher the value the more happy the pet is
-const int Happy_Thres_Up		= 20;
-
-//the lower the value the less happy the pet is
-const int Happy_Thres_Down		= 3;
-
-//the higher the value the more healthy the pet is
-const int Health_Thres_Up		= 30;
-
-//the lower the value the less healthy the pet is
-const int Health_Thres_Down		= 4;
-
-//above that threshold the pet is sick
-const int Sick_Thres			= 20;
-
-//below that threshold the pet is dead
-const int Death_Thres			= 0;
-
-
 
 
 class AlienGotchi : public BaseGameEntity
@@ -90,18 +87,24 @@ public:
 
   bool          Hungry()const; 
   void          DecreaseAppetite();
-  void          IncreaseAppetite(){m_iHungryLevel += 1;}
+  void          IncreaseAppetite();
   bool			Full()const;
+  int			HungryLevel(){return m_iHungryLevel;}
+  void			ResetAppetite();
 
   bool			Happy()const;
   void			DecreaseHappiness();
-  void			IncreaseHappiness(){m_iHappyLevel += 1;}
+  void			IncreaseHappiness();
   bool			Sad()const;
+  int			HappyLevel(){return m_iHappyLevel;}
+  void			ResetHappiness();
 
   bool			Healthy()const;
   void			DecreaseFitness();
   void			IncreaseFitness();
   bool			Ill()const;
+  int			HealthyLevel(){return m_iHealthyLevel;}
+  void			ResetFitness();
 
   bool			Death()const;
   

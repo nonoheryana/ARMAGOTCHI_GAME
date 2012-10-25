@@ -5,8 +5,7 @@
 #include "AlienGotchi.h"
 #include "EntityNames.h"
 #include "ofxTimer.h"
-//#include "TimeEvent.h"
-//#include "timeObject.h"
+
 
 class testApp : public ofBaseApp{
 public:
@@ -24,19 +23,22 @@ public:
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-		//void timeEvent(TimeEvent &t);
-		//void timeUp(timeObject &o);
 
-		//timeObject tObject;
+		// callback gia otan tha teleiwsei o timer
+		void timer1_ended(ofEventArgs &e);
+		void timer2_ended(ofEventArgs &f);
+		void timer3_ended(ofEventArgs &g);
+
+		ofxTimer myTimer_health;
+		ofxTimer myTimer_hungry;
+		ofxTimer myTimer_happy;
+
 		mood_type currentMood;
 		int mood;
 		int var;
 
 		string msg;
-		string msg1;
 
-		//ofxTimer theTime;
-		//float mills;
-		
-		
+		int count_time;
+		//float mills;		
 };

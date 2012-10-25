@@ -3,10 +3,10 @@
 
 
 AlienGotchi::AlienGotchi(int id):BaseGameEntity(id),
-                     m_Mood(playful),
+                     m_Mood(bored),
                      m_iHungryLevel(0),
 					 m_iHappyLevel(Happy_MAX),
-					 m_iHealthyLevel(Healthy_MAX),
+					 m_iHealthyLevel(Healthy_MAX/2),
                      m_pCurrentState(Bored::Instance())
                                                                   
 {}
@@ -34,7 +34,7 @@ void AlienGotchi::ChangeState(State *pNewState)
 //-----------------------------------------------------------------------------
 void AlienGotchi::Update()
 {
-	m_iHungryLevel += 1;
+	//m_iHungryLevel += 1;
 
 	if (m_pCurrentState)
 	{
@@ -60,19 +60,32 @@ bool AlienGotchi::Full()const
   return false;
 }
 
+void AlienGotchi::IncreaseAppetite()
+{
+	m_iHungryLevel += 1;
+	if (m_iHungryLevel>Hungry_MAX)
+	{
+		m_iHungryLevel=Hungry_MAX;
+	}
+}
 void AlienGotchi::DecreaseAppetite()
 {
-	m_iHungryLevel -= 1;
+	m_iHungryLevel -= 5;
 	if (m_iHungryLevel < 0)
 	{
 		m_iHungryLevel=0;
 	}
 }
 
+void AlienGotchi::ResetAppetite()
+{
+	m_iHungryLevel=0;
+}
+
 //-----------------------------------------------------------------------------
 bool AlienGotchi::Happy()const
 {
-	if (m_iHappyLevel >= Hungry_Thres_Up){return true;}
+	if (m_iHappyLevel >= Happy_Thres_Up){return true;}
 
 	return false;
 }
@@ -96,6 +109,21 @@ void AlienGotchi::DecreaseHappiness()
 	}
 }
 
+void AlienGotchi::IncreaseHappiness()
+{
+	m_iHappyLevel += 3;
+	if (m_iHappyLevel > Happy_MAX)
+	{
+		m_iHappyLevel = Happy_MAX;
+	}
+	
+}
+
+void AlienGotchi::ResetHappiness()
+{
+	m_iHappyLevel=Happy_MAX;
+}
+
 //-----------------------------------------------------------------------------
 bool AlienGotchi::Healthy()const
 {
@@ -106,7 +134,7 @@ bool AlienGotchi::Healthy()const
 
 bool AlienGotchi::Ill()const
 {
-	if (m_iHealthyLevel < Health_Thres_Down)
+	if (m_iHungryLevel > Sick_Thres)
 	{
 		return true;
 	}
@@ -123,11 +151,15 @@ void AlienGotchi::DecreaseFitness(){
 }
 
 void AlienGotchi::IncreaseFitness(){
-	m_iHealthyLevel += 1;
+	m_iHealthyLevel += 6;
 	if (m_iHealthyLevel > Healthy_MAX)
 	{
 		m_iHealthyLevel= Healthy_MAX;
 	}
+}
+
+void AlienGotchi::ResetFitness(){
+	m_iHealthyLevel= Healthy_MAX/2;
 }
 //-----------------------------------------------------------------------------
 bool AlienGotchi::Death()const

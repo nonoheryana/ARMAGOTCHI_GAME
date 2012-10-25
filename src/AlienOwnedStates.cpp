@@ -41,11 +41,10 @@ void Bored::Enter(AlienGotchi *pAlien)
 void Bored::Execute(AlienGotchi *pAlien)
 {
 
-
 	SetTextColor(FOREGROUND_RED| FOREGROUND_INTENSITY);
 	cout << "\n" << GetNameOfEntity(pAlien->ID()) << ": " 
-		<< "... ";
-	pAlien->SetMessage("...");
+		<< "That is a very nice day on planet Earth... ";
+	pAlien->SetMessage("That is a very nice day on planet Earth...");
 	//Fed enough?
 	if (pAlien->Hungry())
 	{
@@ -151,15 +150,8 @@ void Feed::Execute(AlienGotchi *pAlien)
   cout << "\n" << GetNameOfEntity(pAlien->ID()) << ": " 
        << "More brains... I am still hungry! ";
   pAlien->SetMessage("More brains... I am still hungry!");
-  //wealthy enough to have a well earned rest?
-  if (pAlien->Ill())
-  {
-	  SetTextColor(FOREGROUND_RED| FOREGROUND_INTENSITY);
-	  cout << "\n" << GetNameOfEntity(pAlien->ID()) << ": " 
-		  << "Gloup! I am feeling sick... I might throw up";
-	  pAlien->SetMessage("Gloup! I am feeling sick... I might throw up");
-	  pAlien->ChangeState(Sick::Instance());
-  }
+  
+ 
   if (pAlien->Full() && pAlien->Sad())
   {
 	  SetTextColor(FOREGROUND_RED| FOREGROUND_INTENSITY);
@@ -177,14 +169,23 @@ void Feed::Execute(AlienGotchi *pAlien)
 	  pAlien->SetMessage("I am fed up... Let's rest for a while!!;)");
 	  pAlien->ChangeState(Bored::Instance());      
   }
+
+  if (pAlien->Ill())
+  {
+	  SetTextColor(FOREGROUND_RED| FOREGROUND_INTENSITY);
+	  cout << "\n" << GetNameOfEntity(pAlien->ID()) << ": " 
+		  << "Gloup! I am feeling sick... I might throw up";
+	  pAlien->SetMessage("Gloup! I am feeling sick... I might throw up");
+	  pAlien->ChangeState(Sick::Instance()); 
+  }
   
 }
 
 void Feed::Exit(AlienGotchi *pAlien)
 {
   SetTextColor(FOREGROUND_RED| FOREGROUND_INTENSITY);
-  cout << "\n" << GetNameOfEntity(pAlien->ID()) << ": " << "It's zaaapingg Time!!!"; 
-  pAlien->SetMessage("It's zaaapingg Time!!!");
+  cout << "\n" << GetNameOfEntity(pAlien->ID()) << ": " << "Enough fun for today..."; 
+  pAlien->SetMessage("Enough fun for today...");
 }
 
 //----------------------------------------methods for Sick
@@ -202,8 +203,9 @@ void Sick::Enter(AlienGotchi *pAlien)
 	if (pAlien->Mood() != ill)
 	{
 		SetTextColor(FOREGROUND_RED| FOREGROUND_INTENSITY);
-		cout << "\n" << GetNameOfEntity(pAlien->ID()) << ": " << "Not feeling well :(((!!!";
-		pAlien->SetMessage("Not feeling well :(((!!!");
+		cout << "\n" << GetNameOfEntity(pAlien->ID()) << ": " << "Not feeling well... :(((!!!";
+		pAlien->SetMessage("Not feeling well... :(((!!!");
+		pAlien->ResetAppetite();
 		pAlien->ChangeMood(ill);
 	}
 }
@@ -214,8 +216,8 @@ void Sick::Execute(AlienGotchi *pAlien)
 
 	SetTextColor(FOREGROUND_RED| FOREGROUND_INTENSITY);
 	cout << "\n" << GetNameOfEntity(pAlien->ID()) << ": " 
-		<< "I am not feeling good :((... Please help!";
-	pAlien->SetMessage("I am not feeling good :((... Please help!");
+		<< "I am not feeling good :((... I am going to throw up please help!";
+	pAlien->SetMessage("I am not feeling good :((... I am going to throw up please help!");
 	//healthy enough to feed again?
 	if (pAlien->Death())
 	{
@@ -240,6 +242,7 @@ void Sick::Exit(AlienGotchi *pAlien)
 	SetTextColor(FOREGROUND_RED| FOREGROUND_INTENSITY);
 	cout << "\n" << GetNameOfEntity(pAlien->ID()) << ": " << "..."; 
 	pAlien->SetMessage("...");
+	pAlien->ResetFitness();
 }
 
 //----------------------------------------methods for Dead
